@@ -106,11 +106,11 @@ cat << EOF | tee ca-config.json
 {
   "signing": {
     "default": {
-      "expiry": "87600h"
+      "expiry": "876000h"
     },
     "profiles": {
       "etcd": {
-         "expiry": "87600h",
+         "expiry": "876000h",
          "usages": [
             "signing",
             "key encipherment",
@@ -364,11 +364,11 @@ cat << EOF | tee ca-config.json
 {
   "signing": {
     "default": {
-      "expiry": "87600h"
+      "expiry": "876000h"
     },
     "profiles": {
       "kubernetes": {
-         "expiry": "87600h",
+         "expiry": "876000h",
          "usages": [
             "signing",
             "key encipherment",
