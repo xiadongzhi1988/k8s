@@ -1,4 +1,4 @@
-# 
+#
 # ![图片](https://uploader.shimo.im/f/TSR0PeuhLO48FKQg.png!thumbnail)
 
 
@@ -529,14 +529,14 @@ $ cat nginx.conf
 
 
 # hosts解析
-
+```
 [root@k8s-master1 ingree-nginx]# kubectl get pods -o wide -n ingress-nginx 
 NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE        NOMINATED NODE   READINESS GATES
 nginx-ingress-controller-c9b47ff67-vq9cc   1/1     Running   0          85m   10.254.88.3  ** 10.0.0.12**   <none>           <none>
 [root@k8s-master1 ingree-nginx]# kubectl get service -o wide -n ingress-nginx 
 NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
 ingress-nginx   NodePort   10.254.150.28   <none>        80:30080/TCP,443:30443/TCP   77m   app.kubernetes.io/name=ingress-nginx,app.kubernetes.io/part-of=ingress-nginx
-
+```
 
 
 **10.0.0.12**  tomcat.wuxingge.com
@@ -809,33 +809,21 @@ spec:
           serviceName: wordpress
           servicePort: 80
 ```
-
-
-
-
-
-
 ## hosts解析
-
+```
 [root@k8s-master1 ingree-nginx]# kubectl get pods -o wide -n ingress-nginx 
 NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE        NOMINATED NODE   READINESS GATES
 nginx-ingress-controller-c9b47ff67-vq9cc   1/1     Running   0          85m   10.254.88.3   **10.0.0.12**   <none>           <none>
 [root@k8s-master1 ingree-nginx]# kubectl get service -o wide -n ingress-nginx 
 NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
 ingress-nginx   NodePort   10.254.150.28   <none>        80:30080/TCP,443:30443/TCP   77m   app.kubernetes.io/name=ingress-nginx,app.kubernetes.io/part-of=ingress-nginx
-
+```
         
 **10.0.0.12**  wordpress.wuxingge.com
 
 
 ## 访问
 [http://wordpress.wuxingge.com:30080/](http://wordpress.wuxingge.com:30080/)
-
-
-
-
-
-
 
 
 # ingress-nginx配置https转发dashboard
@@ -914,19 +902,15 @@ Events:
   Normal  CREATE  3m32s  nginx-ingress-controller  Ingress kube-system/dashboard-ingress      
 ```
 
-
-
-
-
-
 # hosts解析
+```
 [root@k8s-master1 yaml]# kubectl get service -n ingress-nginx 
 NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx   NodePort   10.254.150.28   <none>        80:30080/TCP,443:**30443**/TCP   14h
 [root@k8s-master1 yaml]# kubectl get pods -n ingress-nginx -o wide
 NAME                                       READY   STATUS    RESTARTS   AGE   IP            NODE        NOMINATED NODE   READINESS GATES
 nginx-ingress-controller-c9b47ff67-vq9cc   1/1     Running   1          14h   10.254.88.3   **10.0.0.12**   <none>           <none>
-
+```
 
 
 10.0.0.12  dashboard.wuxingge.com
@@ -935,24 +919,3 @@ nginx-ingress-controller-c9b47ff67-vq9cc   1/1     Running   1       
 
 # 访问
 [https://dashboard.wuxingge.com:30443](https://dashboard.wuxingge.com:30443)
-
-
-  
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
