@@ -1168,6 +1168,7 @@ KUBE_PROXY_OPTS="--logtostderr=true \
 --v=4 \
 --hostname-override=192.168.0.12 \
 --cluster-cidr=10.254.0.0/16 \
+--proxy-mode=ipvs \
 --kubeconfig=/k8s/kubernetes/cfg/kube-proxy.kubeconfig"
 
 
@@ -1178,6 +1179,7 @@ KUBE_PROXY_OPTS="--logtostderr=true \
 --v=4 \
 --hostname-override=192.168.0.13 \
 --cluster-cidr=10.254.0.0/16 \
+--proxy-mode=ipvs \
 --kubeconfig=/k8s/kubernetes/cfg/kube-proxy.kubeconfig"
 ```
 ## 
