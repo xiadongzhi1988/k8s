@@ -887,6 +887,11 @@ ExecStartPost=/usr/sbin/iptables -P FORWARD ACCEPT
 # 5.2 部署kubelet组件
 ## kublet 运行在每个 worker 节点上，接收 kube-apiserver 发送的请求，管理 Pod 容器，执行交互式命令，如exec、run、logs 等; kublet 启动时自动向 kube-apiserver 注册节点信息，内置的 cadvisor 统计和监控节点的资源使用情况; 为确保安全，只开启接收 https 请求的安全端口，对请求进行认证和授权，拒绝未授权的访问(如apiserver、heapster)   
 
+每个node节点安装ipvsadm
+```
+yum install -y ipvsadm
+```
+
 
 1）安装二进制文件
 ```
