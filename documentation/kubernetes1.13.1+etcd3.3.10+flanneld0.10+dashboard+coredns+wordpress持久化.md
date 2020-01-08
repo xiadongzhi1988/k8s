@@ -60,7 +60,7 @@ docker tag 10.0.0.11:5000/wuxingge/kubernetes-dashboard:v1.10.1 wuxingge/mydocke
 
 
 ```
-docker login 
+docker login
 docker push wuxingge/mydocker:kubernetes-dashboard-v1.10.1
 ```
 
@@ -75,7 +75,7 @@ docker tag registry.cn-beijing.aliyuncs.com/minminmsn/kubernetes-dashboard:v1.10
 
 docker login --username=dong1226032602 registry.cn-hangzhou.aliyuncs.com
 
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard:v1.10.1 
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard:v1.10.1
 ```
 
 
@@ -138,7 +138,7 @@ docker pull coredns/coredns:1.2.2
 ---
 
 **二进制部署自此开始**
-# 
+#
 角色划分
 k8s-master1          10.0.0.11          k8s-master          etcd、kube-apiserver、kube-controller-manager、kube-scheduler
 k8s-node1            10.0.0.12          k8s-node            etcd、kubelet、docker、kube_proxy
@@ -150,7 +150,7 @@ hosts
 10.0.0.12  k8s-node1
 10.0.0.13  k8s-node2
 ```
-# 
+#
 
 
 Master部署
@@ -161,7 +161,7 @@ wget https://dl.k8s.io/v1.13.1/kubernetes-client-linux-amd64.tar.gz
 wget https://github.com/etcd-io/etcd/releases/download/v3.3.10/etcd-v3.3.10-linux-amd64.tar.gz
 wget https://github.com/coreos/flannel/releases/download/v0.10.0/flannel-v0.10.0-linux-amd64.tar.gz
 ```
-# 
+#
 
 
 4.2 cfssl安装
@@ -275,7 +275,7 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=etcd
 2018/12/26 16:18:53 [INFO] generating key: rsa-2048
 2018/12/26 16:18:54 [INFO] encoded CSR
 2018/12/26 16:18:54 [INFO] signed certificate with serial number 388122587040599986639159163167557684970159030057
-2018/12/26 16:18:54 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for websites. 
+2018/12/26 16:18:54 [WARNING] This certificate lacks a "hosts" field. This makes it unsuitable for websites.
 For more information see the Baseline Requirements for the Issuance and Management of Publicly-Trusted Certificates, v.1.1.6, from the CA/Browser Forum (https://cabforum.org);
 specifically, section 10.2.3 ("Information Requirements").
 
@@ -298,7 +298,7 @@ ETCD_NAME="etcd01"
 ETCD_DATA_DIR="/data1/etcd"
 ETCD_LISTEN_PEER_URLS="https://10.0.0.11:2380"
 ETCD_LISTEN_CLIENT_URLS="https://10.0.0.11:2379"
- 
+
 #[Clustering]
 ETCD_INITIAL_ADVERTISE_PEER_URLS="https://10.0.0.11:2380"
 ETCD_ADVERTISE_CLIENT_URLS="https://10.0.0.11:2379"
@@ -324,7 +324,7 @@ ETCD_NAME="etcd02"
 ETCD_DATA_DIR="/data1/etcd"
 ETCD_LISTEN_PEER_URLS="https://10.0.0.12:2380"
 ETCD_LISTEN_CLIENT_URLS="https://10.0.0.12:2379"
- 
+
 #[Clustering]
 ETCD_INITIAL_ADVERTISE_PEER_URLS="https://10.0.0.12:2380"
 ETCD_ADVERTISE_CLIENT_URLS="https://10.0.0.12:2379"
@@ -345,13 +345,13 @@ ETCD_PEER_CLIENT_CERT_AUTH="true"
 
 
 **etcd03:**
-vim /k8s/etcd/cfg/etcd.conf 
+vim /k8s/etcd/cfg/etcd.conf
 #[Member]
 ETCD_NAME="etcd03"
 ETCD_DATA_DIR="/data1/etcd"
 ETCD_LISTEN_PEER_URLS="https://10.0.0.13:2380"
 ETCD_LISTEN_CLIENT_URLS="https://10.0.0.13:2379"
- 
+
 #[Clustering]
 ETCD_INITIAL_ADVERTISE_PEER_URLS="https://10.0.0.13:2380"
 ETCD_ADVERTISE_CLIENT_URLS="https://10.0.0.13:2379"
@@ -456,14 +456,14 @@ vim /usr/lib/systemd/system/flanneld.service
 Description=Flanneld overlay address etcd agent
 After=network-online.target network.target
 Before=docker.service
- 
+
 [Service]
 Type=notify
 EnvironmentFile=/k8s/kubernetes/cfg/flanneld
 ExecStart=/k8s/kubernetes/bin/flanneld --ip-masq $FLANNEL_OPTIONS
 ExecStartPost=/k8s/kubernetes/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/subnet.env
 Restart=on-failure
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -485,7 +485,7 @@ Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
 After=network-online.target firewalld.service
 Wants=network-online.target
- 
+
 [Service]
 Type=notify
 EnvironmentFile=/run/flannel/subnet.env
@@ -501,7 +501,7 @@ KillMode=process
 Restart=on-failure
 StartLimitBurst=3
 StartLimitInterval=60s
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -523,7 +523,7 @@ systemctl enable docker.service
 ```
 ## 5）验证服务
 ```bash
-[root@elasticsearch02 bin]# cat /run/flannel/subnet.env 
+[root@elasticsearch02 bin]# cat /run/flannel/subnet.env
 DOCKER_OPT_BIP="--bip=10.254.35.1/24"
 DOCKER_OPT_IPMASQ="--ip-masq=false"
 DOCKER_OPT_MTU="--mtu=1450"
@@ -540,17 +540,17 @@ DOCKER_NETWORK_OPTIONS=" --bip=10.254.35.1/24 --ip-masq=false --mtu=1450"
     link/ether 52:54:00:a4:ca:ff brd ff:ff:ff:ff:ff:ff
     inet 10.0.0.12/24 brd 10.2.8.255 scope global eth0
        valid_lft forever preferred_lft forever
-3: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN 
+3: docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN
     link/ether 02:42:06:0a:ab:32 brd ff:ff:ff:ff:ff:ff
     inet 10.254.35.1/24 brd 10.254.35.255 scope global docker0
        valid_lft forever preferred_lft forever
-4: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN 
+4: flannel.1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UNKNOWN
     link/ether 72:59:dc:2b:0a:21 brd ff:ff:ff:ff:ff:ff
     inet 10.254.35.0/32 scope global flannel.1
        valid_lft forever preferred_lft forever
 ```
 
-    
+
 # 4.5 生成kubernets证书与私钥
 ## 1）制作kubernetes ca证书
 ```bash
@@ -714,7 +714,7 @@ ca.csr          ca-key.pem   kube-proxy.csr  kube-proxy-key.pem   server.csr    
 
 ## 1）解压缩文件
 ```bash
-tar xf kubernetes-server-linux-amd64.tar.gz 
+tar xf kubernetes-server-linux-amd64.tar.gz
 cd kubernetes/server/bin/
 cp kube-scheduler kube-apiserver kube-controller-manager kubectl /k8s/kubernetes/bin/
 ```
@@ -757,17 +757,17 @@ KUBE_APISERVER_OPTS="--logtostderr=true \
 
 ## 创建apiserver systemd文件
 ```bash
-vim /usr/lib/systemd/system/kube-apiserver.service 
+vim /usr/lib/systemd/system/kube-apiserver.service
 
 [Unit]
 Description=Kubernetes API Server
 Documentation=https://github.com/kubernetes/kubernetes
- 
+
 [Service]
 EnvironmentFile=-/k8s/kubernetes/cfg/kube-apiserver
 ExecStart=/k8s/kubernetes/bin/kube-apiserver $KUBE_APISERVER_OPTS
 Restart=on-failure
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -788,15 +788,15 @@ systemctl start kube-apiserver
            └─22060 /k8s/kubernetes/bin/kube-apiserver --logtostderr=true --v=4 --etcd-servers=https://10.0.0.11:2379,https://10.2....
 ```
 
-           
+
 [root@elasticsearch01 bin]# ps -ef |grep kube-apiserver
 root     22060     1  5 14:41 ?        00:00:14 /k8s/kubernetes/bin/kube-apiserver --logtostderr=true --v=4 --etcd-servers=https://10.0.0.11:2379,https://10.0.0.12:2379,https://10.0.0.13:2379 --bind-address=10.0.0.11 --secure-port=6443 --advertise-address=10.0.0.11 --allow-privileged=true --service-cluster-ip-range=10.254.0.0/16 --enable-admission-plugins=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota,NodeRestriction --authorization-mode=RBAC,Node --enable-bootstrap-token-auth --token-auth-file=/k8s/kubernetes/cfg/token.csv --service-node-port-range=30000-50000 --tls-cert-file=/k8s/kubernetes/ssl/server.pem --tls-private-key-file=/k8s/kubernetes/ssl/server-key.pem --client-ca-file=/k8s/kubernetes/ssl/ca.pem --service-account-key-file=/k8s/kubernetes/ssl/ca-key.pem --etcd-cafile=/k8s/etcd/ssl/ca.pem --etcd-certfile=/k8s/etcd/ssl/server.pem --etcd-keyfile=/k8s/etcd/ssl/server-key.pem
 
 
 ```bash
 [root@elasticsearch01 bin]# netstat -tulpn |grep kube-apiserve
-tcp        0      0 10.0.0.11:6443          0.0.0.0:*               LISTEN      22060/kube-apiserve 
-tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      22060/kube-apiserve 
+tcp        0      0 10.0.0.11:6443          0.0.0.0:*               LISTEN      22060/kube-apiserve
+tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      22060/kube-apiserve
 ```
 
 
@@ -805,27 +805,27 @@ tcp        0      0 127.0.0.1:8080          0.0.0.0:*               LISTEN      
 [https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/](https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/)
 
 ```bash
-vim  /k8s/kubernetes/cfg/kube-scheduler 
+vim  /k8s/kubernetes/cfg/kube-scheduler
 KUBE_SCHEDULER_OPTS="--logtostderr=true --v=4 --master=127.0.0.1:8080 --leader-elect"
 ```
-## 
+##
 参数备注： --address：在 127.0.0.1:10251 端口接收 http /metrics 请求；kube-scheduler 目前还不支持接收 https 请求； --kubeconfig：指定 kubeconfig 文件路径，kube-scheduler 使用它连接和验证 kube-apiserver； --leader-elect=true：集群运行模式，启用选举功能；被选为 leader 的节点负责处理工作，其它节点为阻塞状态；
 
 
 
 创建kube-scheduler systemd文件
 ```bash
-vim /usr/lib/systemd/system/kube-scheduler.service 
- 
+vim /usr/lib/systemd/system/kube-scheduler.service
+
 [Unit]
 Description=Kubernetes Scheduler
 Documentation=https://github.com/kubernetes/kubernetes
- 
+
 [Service]
 EnvironmentFile=-/k8s/kubernetes/cfg/kube-scheduler
 ExecStart=/k8s/kubernetes/bin/kube-scheduler $KUBE_SCHEDULER_OPTS
 Restart=on-failure
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -834,7 +834,7 @@ WantedBy=multi-user.target
 启动服务
 ```bash
 systemctl daemon-reload
-systemctl enable kube-scheduler.service 
+systemctl enable kube-scheduler.service
 systemctl start kube-scheduler.service
 ```
 
@@ -849,7 +849,7 @@ systemctl start kube-scheduler.service
 
 
 
-           
+
 ## 4）部署kube-controller-manager组件 创建kube-controller-manager配置文件
 [https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/](https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/)
 
@@ -870,17 +870,17 @@ KUBE_CONTROLLER_MANAGER_OPTS="--logtostderr=true \
 ```
 ##  创建kube-controller-manager systemd文件
 ```bash
-vim /usr/lib/systemd/system/kube-controller-manager.service 
- 
+vim /usr/lib/systemd/system/kube-controller-manager.service
+
 [Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://github.com/kubernetes/kubernetes
- 
+
 [Service]
 EnvironmentFile=-/k8s/kubernetes/cfg/kube-controller-manager
 ExecStart=/k8s/kubernetes/bin/kube-controller-manager $KUBE_CONTROLLER_MANAGER_OPTS
 Restart=on-failure
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -903,7 +903,7 @@ systemctl start kube-controller-manager
 
 
 
-           
+
 ## 4.7 验证kubeserver服务
 ```bash
 设置环境变量
@@ -919,11 +919,11 @@ kubectl get cs,nodes
 ```bash
 [root@elasticsearch01 bin]# kubectl get cs,nodes
 NAME                                 STATUS    MESSAGE             ERROR
-componentstatus/controller-manager   Healthy   ok                  
-componentstatus/scheduler            Healthy   ok                  
-componentstatus/etcd-0               Healthy   {"health":"true"}   
-componentstatus/etcd-1               Healthy   {"health":"true"}   
-componentstatus/etcd-2               Healthy   {"health":"true"}   
+componentstatus/controller-manager   Healthy   ok
+componentstatus/scheduler            Healthy   ok
+componentstatus/etcd-0               Healthy   {"health":"true"}
+componentstatus/etcd-1               Healthy   {"health":"true"}
+componentstatus/etcd-2               Healthy   {"health":"true"}
 ```
 
 ---
@@ -938,7 +938,7 @@ flannel
 CentOS Linux release 7.4.1708 (Core)
 Docker版本
 Server Version: 18.09.0
-Cgroup Driver: cgroupfs  
+Cgroup Driver: cgroupfs
 
 
 
@@ -957,7 +957,7 @@ ExecStartPost=/usr/sbin/iptables -P FORWARD ACCEPT
 
 
 # 5.2 部署kubelet组件
-## kublet 运行在每个 worker 节点上，接收 kube-apiserver 发送的请求，管理 Pod 容器，执行交互式命令，如exec、run、logs 等; kublet 启动时自动向 kube-apiserver 注册节点信息，内置的 cadvisor 统计和监控节点的资源使用情况; 为确保安全，只开启接收 https 请求的安全端口，对请求进行认证和授权，拒绝未授权的访问(如apiserver、heapster)   
+## kublet 运行在每个 worker 节点上，接收 kube-apiserver 发送的请求，管理 Pod 容器，执行交互式命令，如exec、run、logs 等; kublet 启动时自动向 kube-apiserver 注册节点信息，内置的 cadvisor 统计和监控节点的资源使用情况; 为确保安全，只开启接收 https 请求的安全端口，对请求进行认证和授权，拒绝未授权的访问(如apiserver、heapster)
 
 
 ## 1）安装二进制文件
@@ -965,25 +965,25 @@ ExecStartPost=/usr/sbin/iptables -P FORWARD ACCEPT
 wget https://dl.k8s.io/v1.13.1/kubernetes-node-linux-amd64.tar.gz
 tar xf kubernetes-node-linux-amd64.tar.gz
 cd kubernetes/node/bin/
-cp kube-proxy kubelet kubectl /k8s/kubernetes/bin/     
+cp kube-proxy kubelet kubectl /k8s/kubernetes/bin/
 ```
 ## 2）复制相关证书到node节点
 ```bash
 [root@elasticsearch01 ssl]# scp *.pem 10.0.0.12:$PWD
-root@10.0.0.12's password: 
-ca-key.pem                                                                                         100% 1679   914.6KB/s   00:00    
-ca.pem                                                                                             100% 1359     1.0MB/s   00:00    
-kube-proxy-key.pem                                                                                 100% 1675     1.2MB/s   00:00    
-kube-proxy.pem                                                                                     100% 1403     1.1MB/s   00:00    
-server-key.pem                                                                                     100% 1679   809.1KB/s   00:00    
-server.pem     
+root@10.0.0.12's password:
+ca-key.pem                                                                                         100% 1679   914.6KB/s   00:00
+ca.pem                                                                                             100% 1359     1.0MB/s   00:00
+kube-proxy-key.pem                                                                                 100% 1675     1.2MB/s   00:00
+kube-proxy.pem                                                                                     100% 1403     1.1MB/s   00:00
+server-key.pem                                                                                     100% 1679   809.1KB/s   00:00
+server.pem
 ```
 
 ##  3）创建kubelet bootstrap kubeconfig文件 通过脚本实现
 ```bash
 vim /k8s/kubernetes/cfg/environment.sh
 #!/bin/bash
-#创建kubelet bootstrapping kubeconfig 
+#创建kubelet bootstrapping kubeconfig
 BOOTSTRAP_TOKEN=57cf77e5364ec551d908c983e2c05878
 KUBE_APISERVER="https://10.0.0.11:6443"
 #设置集群参数
@@ -992,42 +992,42 @@ kubectl config set-cluster kubernetes \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
   --kubeconfig=bootstrap.kubeconfig
- 
+
 #设置客户端认证参数
 kubectl config set-credentials kubelet-bootstrap \
   --token=${BOOTSTRAP_TOKEN} \
   --kubeconfig=bootstrap.kubeconfig
- 
+
 # 设置上下文参数
 kubectl config set-context default \
   --cluster=kubernetes \
   --user=kubelet-bootstrap \
   --kubeconfig=bootstrap.kubeconfig
- 
+
 # 设置默认上下文
 kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
- 
+
 #----------------------
- 
+
 # 创建kube-proxy kubeconfig文件
- 
+
 kubectl config set-cluster kubernetes \
   --certificate-authority=/k8s/kubernetes/ssl/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
   --kubeconfig=kube-proxy.kubeconfig
- 
+
 kubectl config set-credentials kube-proxy \
   --client-certificate=/k8s/kubernetes/ssl/kube-proxy.pem \
   --client-key=/k8s/kubernetes/ssl/kube-proxy-key.pem \
   --embed-certs=true \
   --kubeconfig=kube-proxy.kubeconfig
- 
+
 kubectl config set-context default \
   --cluster=kubernetes \
   --user=kube-proxy \
   --kubeconfig=kube-proxy.kubeconfig
- 
+
 kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 ```
 
@@ -1035,7 +1035,7 @@ kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 
 执行脚本
 ```bash
-[root@elasticsearch02 cfg]# sh environment.sh 
+[root@elasticsearch02 cfg]# sh environment.sh
 Cluster "kubernetes" set.
 User "kubelet-bootstrap" set.
 Context "default" created.
@@ -1068,8 +1068,8 @@ failSwapOn: false
 authentication:
   anonymous:
     enabled: true
-    
-    
+
+
 
 10.0.0.13:
 vim /k8s/kubernetes/cfg/kubelet.config
@@ -1084,7 +1084,7 @@ clusterDomain: cluster.local.
 failSwapOn: false
 authentication:
   anonymous:
-    enabled: true    
+    enabled: true
 ```
 
 ##  5）创建kubelet配置文件
@@ -1122,18 +1122,18 @@ KUBELET_OPTS="--logtostderr=true \
 ```
 ## 6）创建kubelet systemd文件
 ```bash
-vim /usr/lib/systemd/system/kubelet.service 
+vim /usr/lib/systemd/system/kubelet.service
 [Unit]
 Description=Kubernetes Kubelet
 After=docker.service
 Requires=docker.service
- 
+
 [Service]
 EnvironmentFile=/k8s/kubernetes/cfg/kubelet
 ExecStart=/k8s/kubernetes/bin/kubelet $KUBELET_OPTS
 Restart=on-failure
 KillMode=process
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -1156,7 +1156,7 @@ clusterrolebinding.rbac.authorization.k8s.io/kubelet-bootstrap created
 
 
 
-8）启动服务 
+8）启动服务
 ```bash
 systemctl daemon-reload
 systemctl enable kubelet
@@ -1199,7 +1199,7 @@ node-csr-ij3py9j-yi-eoa8sOHMDs7VeTQtMv0N3Efj3ByZLMdc   5m13s   kubelet-bootstrap
 ```
 
 # 5.3部署kube-proxy组件
-## kube-proxy 运行在所有 node节点上，它监听 apiserver 中 service 和 Endpoint 的变化情况，创建路由规则来进行服务负载均衡 
+## kube-proxy 运行在所有 node节点上，它监听 apiserver 中 service 和 Endpoint 的变化情况，创建路由规则来进行服务负载均衡
 1）创建 kube-proxy 配置文件
 [https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/](https://v1-13.docs.kubernetes.io/docs/reference/command-line-tools-reference/kube-proxy/)
 
@@ -1227,17 +1227,17 @@ KUBE_PROXY_OPTS="--logtostderr=true \
 ```
 ## 2）创建kube-proxy systemd文件
 ```bash
-vim /usr/lib/systemd/system/kube-proxy.service 
- 
+vim /usr/lib/systemd/system/kube-proxy.service
+
 [Unit]
 Description=Kubernetes Proxy
 After=network.target
- 
+
 [Service]
 EnvironmentFile=-/k8s/kubernetes/cfg/kube-proxy
 ExecStart=/k8s/kubernetes/bin/kube-proxy $KUBE_PROXY_OPTS
 Restart=on-failure
- 
+
 [Install]
 WantedBy=multi-user.target
 ```
@@ -1268,7 +1268,7 @@ WantedBy=multi-user.target
 
 
 
-3）启动服务 
+3）启动服务
 ```bash
 systemctl daemon-reload
 systemctl enable kube-proxy
@@ -1284,7 +1284,7 @@ systemctl start kube-proxy
    CGroup: /system.slice/kube-proxy.service
            ‣ 5376 /k8s/kubernetes/bin/kube-proxy --logtostderr=true --v=4 --hostname-override=10.0.0.11 --cluster-cidr=10.254.0.0/...
 ```
-   
+
 
 
 4）查看集群状态
@@ -1330,7 +1330,7 @@ echo "source <(kubectl completion bash)" >> /etc/profile
 
 # pod
 ```yml
-vim nginx_pod.yml 
+vim nginx_pod.yml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -1364,7 +1364,7 @@ Service在Kubernetes是一个REST对象，类似于Pod。与所有REST对象一�
 例如，假设您有一组Pods每个公开端口30000并带有标签"app=web"
 
 ```yml
-vim nginx_service.yml 
+vim nginx_service.yml
 apiVersion: v1
 kind: Service
 metadata:
@@ -1378,7 +1378,7 @@ spec:
     app: web
 
 
-    
+
 kubectl create -f k8s_service.yml
 
 
@@ -1395,7 +1395,7 @@ nginx        NodePort    10.254.76.1   <none>        80:30000/TCP   23s   app=we
 
 
 
-kubectl delete -f k8s_service.yml  
+kubectl delete -f k8s_service.yml
 ```
 
 
@@ -1419,15 +1419,14 @@ openssl x509 -req -sha256 -days 36500 -in /certs/dashboard.csr -signkey /certs/d
 
 
 ```bash
-kubectl create secret generic kubernetes-dashboard-certs --from-file=certs -n kube-system
-secret/kubernetes-dashboard-certs created
+kubectl create secret generic kubernetes-dashboard-certs --from-file=/certs -n kube-system
 ```
 
 
 # 修改service配置，将type: ClusterIP改成NodePort,便于通过Node端口访问
 ```yml
 [root@elasticsearch01 /]# wget https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
-[root@elasticsearch01 /]# vim /k8s/yaml/kubernetes-dashboard.yaml 
+[root@elasticsearch01 /]# vim /k8s/yaml/kubernetes-dashboard.yaml
 kind: Service
 apiVersion: v1
 metadata:
@@ -1444,13 +1443,13 @@ spec:
   selector:
     k8s-app: kubernetes-dashboard
 ```
-    
-    
+
+
 # 部署Kubernetes-dashboard
 修改镜像地址为registry.cn-beijing.aliyuncs.com/minminmsn/kubernetes-dashboard:v1.10.1即可部署
 
 ```yml
-[root@elasticsearch01 /]# vim /k8s/yaml/kubernetes-dashboard.yaml 
+[root@elasticsearch01 /]# vim /k8s/yaml/kubernetes-dashboard.yaml
     spec:
       containers:
       - name: kubernetes-dashboard
@@ -1458,10 +1457,10 @@ spec:
 ```
 
 
-        
+
 
 ```bash
-[root@elasticsearch01 /]# kubectl create -f /k8s/yaml/kubernetes-dashboard.yaml 
+[root@elasticsearch01 /]# kubectl create -f /k8s/yaml/kubernetes-dashboard.yaml
 serviceaccount/kubernetes-dashboard created
 role.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
 rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard-minimal created
@@ -1488,7 +1487,7 @@ kubernetes-dashboard   NodePort   10.254.207.120   <none>        443:31861/TCP  
 
 选择token访问，token获取方法如下
 ```yml
-[root@elasticsearch01 ~]# cat /k8s/yaml/admin-token.yaml 
+[root@elasticsearch01 ~]# cat /k8s/yaml/admin-token.yaml
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
@@ -1515,9 +1514,9 @@ metadata:
 ```
 
 
-    
+
 ```bash
-[root@elasticsearch01 yaml]# kubectl create -f admin-token.yaml 
+[root@elasticsearch01 yaml]# kubectl create -f admin-token.yaml
 clusterrolebinding.rbac.authorization.k8s.io/admin created
 serviceaccount/admin created
 ```
@@ -1573,7 +1572,7 @@ cd /coredns
 
 
 ```bash
-[root@k8s-master1 coredns]# diff coredns.yaml coredns.yaml.sed 
+[root@k8s-master1 coredns]# diff coredns.yaml coredns.yaml.sed
 59c59
 <         kubernetes cluster.local  10.254.0.0/16 {
 ---
@@ -1812,8 +1811,8 @@ service/kube-dns created
 ```
 
 ```bash
-[root@elasticsearch02 ~]# systemctl restart kubelet.service 
-[root@elasticsearch02 ~]# systemctl status kubelet.service 
+[root@elasticsearch02 ~]# systemctl restart kubelet.service
+[root@elasticsearch02 ~]# systemctl status kubelet.service
 ● kubelet.service - Kubernetes Kubelet
    Loaded: loaded (/usr/lib/systemd/system/kubelet.service; enabled; vendor preset: disabled)
    Active: active (running) since Thu 2019-01-03 16:00:20 CST; 6s ago
@@ -1904,9 +1903,9 @@ busybox   1/1     Running   0          8s
 
 ```bash
 [root@k8s-master1 ~]# kubectl exec -it busybox sh
-/ # 
-/ # 
-/ # 
+/ #
+/ #
+/ #
 / # nslookup kubernetes
 Server:    10.254.0.10
 Address 1: 10.254.0.10 kube-dns.kube-system.svc.cluster.local
@@ -1949,7 +1948,7 @@ kubectl create namespace blog
 # 分步完成
 ## 第一步，创建一个MySQL的Deployment对象：(wordpress-db.yaml)
 
-[root@k8s-master1 wordpress]# vim wordpress-db.yaml 
+[root@k8s-master1 wordpress]# vim wordpress-db.yaml
 ```yml
 ---
 apiVersion: apps/v1beta1
@@ -2004,17 +2003,17 @@ spec:
     targetPort: dbport
 ```
 
-    
-    
 
-    
+
+
+
 ```bash
 kubectl create -f wordpress-db.yaml
 ```
 
 
 
-   
+
 ```bash
 [root@k8s-master1 wordpress]# kubectl describe svc mysql -n blog
 Name:              mysql
@@ -2067,7 +2066,7 @@ spec:
         - name: WORDPRESS_DB_PASSWORD
           value: wordpress
 ```
-          
+
 
 
 ```bash
@@ -2114,7 +2113,7 @@ spec:
 
 
 ```bash
-[root@k8s-master1 wordpress]# kubectl apply -f wordpress.yaml 
+[root@k8s-master1 wordpress]# kubectl apply -f wordpress.yaml
 Warning: kubectl apply should be used on resource created by either kubectl create --save-config or kubectl apply
 deployment.apps/wordpress-deploy configured
 service/wordpress created
@@ -2170,7 +2169,7 @@ kubectl autoscale deployment wordpress-deploy --cpu-percent=10 --min=1 --max=10 
 
 # 部署的应用整合到一个YAML文件中来：（wordpress-all.yaml）
 
-[root@k8s-master1 wordpress]# cat wordpress-all.yaml 
+[root@k8s-master1 wordpress]# cat wordpress-all.yaml
 ```yml
 ---
 apiVersion: apps/v1beta1
@@ -2292,11 +2291,11 @@ spec:
     nodePort: 32255
     targetPort: wdport
 ```
-    
-    
-    
 
-资源限制    
+
+
+
+资源限制
 ```yml
         resources:
           limits:
@@ -2396,10 +2395,10 @@ spec:
     server: 10.0.0.11
     path: /data/web
 ```
-    
+
 
 # pvc
-vim wordpress_nfs_pvc.yaml 
+vim wordpress_nfs_pvc.yaml
 ```yml
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -2420,7 +2419,7 @@ spec:
 
 
 # wordpress-all
-[root@k8s-master1 wordpress]# vim wordpress-all.yaml 
+[root@k8s-master1 wordpress]# vim wordpress-all.yaml
 ```yml
 ---
 apiVersion: apps/v1beta1
@@ -2590,7 +2589,7 @@ kubectl get secrets
 
 ## pv
 ```yml
-[root@k8s-master1 wordpress]# vim mysql_nfs_pv.yaml 
+[root@k8s-master1 wordpress]# vim mysql_nfs_pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -2610,7 +2609,7 @@ spec:
 
 ## pvc
 ```yml
-[root@k8s-master1 wordpress]# vim mysql_nfs_pvc.yaml 
+[root@k8s-master1 wordpress]# vim mysql_nfs_pvc.yaml
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -2628,7 +2627,7 @@ spec:
 
 ## deployment_service
 ```yml
-[root@k8s-master1 wordpress]# vim mysql-deployment.yaml 
+[root@k8s-master1 wordpress]# vim mysql-deployment.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -2697,7 +2696,7 @@ spec:
 # 部署wordpress
 ## pv
 ```yml
-[root@k8s-master1 wordpress]# vim wordpress_nfs_pv.yaml 
+[root@k8s-master1 wordpress]# vim wordpress_nfs_pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -2717,7 +2716,7 @@ spec:
 
 ## pvc
 ```yml
-[root@k8s-master1 wordpress]# vim wordpress_nfs_pvc.yaml 
+[root@k8s-master1 wordpress]# vim wordpress_nfs_pvc.yaml
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -2736,7 +2735,7 @@ spec:
 
 ## deployment_service
 ```yml
-[root@k8s-master1 wordpress]# vim wordpress-deployment.yaml 
+[root@k8s-master1 wordpress]# vim wordpress-deployment.yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -2799,7 +2798,7 @@ spec:
 
 
 
-[root@k8s-master1 wordpress]# cat wordpress-deployment.yaml 
+[root@k8s-master1 wordpress]# cat wordpress-deployment.yaml
 ```yml
 apiVersion: v1
 kind: Service
@@ -2903,15 +2902,15 @@ docker pull gcr.io/google_containers/coredns:1.2.2
 
 
 ```bash
-docker tag gcr.io/google_containers/kube-apiserver-amd64:v1.14.2           registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-apiserver-amd64:v1.14.2         
+docker tag gcr.io/google_containers/kube-apiserver-amd64:v1.14.2           registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-apiserver-amd64:v1.14.2
 docker tag gcr.io/google_containers/kube-controller-manager-amd64:v1.14.2  registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-controller-manager-amd64:v1.14.2
-docker tag gcr.io/google_containers/kube-scheduler-amd64:v1.14.2           registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-scheduler-amd64:v1.14.2         
-docker tag gcr.io/google_containers/kube-proxy-amd64:v1.14.2               registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-proxy-amd64:v1.14.2             
-docker tag gcr.io/google_containers/pause:3.1                              registry.cn-hangzhou.aliyuncs.com/wuxingge/pause:3.1                            
-docker tag gcr.io/google_containers/etcd-amd64:3.2.24                      registry.cn-hangzhou.aliyuncs.com/wuxingge/etcd-amd64:3.2.24                    
-docker tag gcr.io/google_containers/kubernetes-dashboard-amd64:v1.10.1     registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.10.1   
-docker tag gcr.io/google_containers/kubernetes-dashboard-amd64:v1.5.1      registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.5.1    
-docker tag gcr.io/google_containers/kubernetes-dashboard-amd64:v1.4.1      registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.4.1    
+docker tag gcr.io/google_containers/kube-scheduler-amd64:v1.14.2           registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-scheduler-amd64:v1.14.2
+docker tag gcr.io/google_containers/kube-proxy-amd64:v1.14.2               registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-proxy-amd64:v1.14.2
+docker tag gcr.io/google_containers/pause:3.1                              registry.cn-hangzhou.aliyuncs.com/wuxingge/pause:3.1
+docker tag gcr.io/google_containers/etcd-amd64:3.2.24                      registry.cn-hangzhou.aliyuncs.com/wuxingge/etcd-amd64:3.2.24
+docker tag gcr.io/google_containers/kubernetes-dashboard-amd64:v1.10.1     registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.10.1
+docker tag gcr.io/google_containers/kubernetes-dashboard-amd64:v1.5.1      registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.5.1
+docker tag gcr.io/google_containers/kubernetes-dashboard-amd64:v1.4.1      registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.4.1
 docker tag gcr.io/google_containers/coredns:1.2.2 registry.cn-hangzhou.aliyuncs.com/wuxingge/coredns:1.2.2
 ```
 
@@ -2924,26 +2923,14 @@ docker login --username=dong1226032602 registry.cn-hangzhou.aliyuncs.com
 
 
 ```bash
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-apiserver-amd64:v1.14.2         
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-apiserver-amd64:v1.14.2
 docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-controller-manager-amd64:v1.14.2
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-scheduler-amd64:v1.14.2         
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-proxy-amd64:v1.14.2             
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/pause:3.1                            
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/etcd-amd64:3.2.24                    
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.10.1   
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.5.1    
-docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.4.1  
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-scheduler-amd64:v1.14.2
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kube-proxy-amd64:v1.14.2
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/pause:3.1
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/etcd-amd64:3.2.24
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.10.1
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.5.1
+docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/kubernetes-dashboard-amd64:v1.4.1
 docker push registry.cn-hangzhou.aliyuncs.com/wuxingge/coredns:1.2.2
 ```
-
-
-
-  
-
-
-
-
-
-
-
-
